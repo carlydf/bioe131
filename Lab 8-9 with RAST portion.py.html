@@ -1,0 +1,81 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# Terminal commands:
+#     spades.py -t 1 /data/lab8/illumina_reads_R1.fastq -2 /data/lab8/illumina_reads_R2.fastq -o --/data/lab8/pacbio_reads.fastq
+
+# In[8]:
+
+
+from IPython.display import Image, display
+
+
+# ![Capture33.PNG](attachment:Capture33.PNG)
+
+# Why do we expect short reads to produce a more fragmented assembly than long reads? since the number of base pairs is less there is a smaller range of alignment
+# Why does a single-molecule sequencing like PacBio have a higher error rate than Illumina? Since when using PacBio you are using a single molecule of DNA, this allows you to analyze longer reads. With longer reads, you can sequence through extended repetitive regions and detect mutations. However because of this you will have a higher error rate, which is why it it recommeneded to supliment PacBio with other shorter read tequniques. 
+
+# We ran assembly-stats on cinfigs.fasta and scaffolds.fasta to get the following results:
+
+# In[2]:
+
+
+from IPython.display import Image
+Image(filename="assembly_stats.png")
+
+
+# We calculate N50 instead of just the mean/median contig length, because the N50 gives greater weight to the longer contigs. The scaffolds are on average longer than the contigs here; gaps have been inserted.
+
+# We then used the command "rna_hmm.py -i contigs.fasta -o hmm_out.gff" to get a gff file describing the structure of rRNA genes. We deleted all non-16S_rRNA lines, leaving us with only two lines.
+
+# We then used the command "bedtools getfasta -fi contigs.fasta -bed hmm_out.gff" and that generated the file contigs.fasta.fai. We planned to then run the generated sequences through the Ribosomal Data Project's SeqMatch tool, but despite trying it on multiple computers, the site never loaded.
+
+# In[6]:
+
+
+Image(filename="timeout1.png")
+
+
+# In[7]:
+
+
+Image(filename="timeout2.jpg")
+
+
+# We got it to work on Nathan's computer! The NODE_205_length_5281_cov_46.409973:805-1858 sequence is from the Pseudomonas genus, based on the results of the query, and the NODE_205_length_5281_cov_46.409973:331-755 also had results showing it to be from the Pseudomonas genus. This is convincing evidence that that is the genus we are interested in.
+
+# In[8]:
+
+
+Image(filename="genus1858.jpg")
+
+
+# In[9]:
+
+
+Image(filename="genus755.jpg")
+
+
+# We will be submitting our RAST section tomorrow as a separate iPython notebook, along with our research on the genus.
+
+# The aspect of our genome we chose to focus on was antibiotic resistance. A study by Roghayeh Nouri et al. on "The role of gyrA and parC mutations in fluoroquinolones-resistant Pseudomonas aeruginosa isolates from Iran" found a correlation between the number of gyrA and parC mutations and the level of ciprofloxacin and levofloxacin resistance of the Pseudomona aeruginosa they tested. Below is a chart showing the RAST-determined fluoroquinolone-resistance in our genome.
+
+# In[12]:
+
+
+Image(filename="resistance2.png")
+
+
+# Below is a chart showing the subsystem category distribution of our genome. Pseudomona is a dangerous human pathogen because it is resistant to so many different types of antibacterial treatments. "The Pseudomonas aeruginosa opportunistic pathogen and human infections" covers a 46-person research conference on models for Pseudomona aeruginosa and was organized by Sophie de Bentzmann To give an idea of the pervasiveness of the pathogen, this abstract cited the statistic that 10% of nosocomial infections in EU hospitals are caused by Pseudomona aeruginosa.
+
+# In[14]:
+
+
+Image(filename="pie.png")
+
+
+# In[ ]:
+
+
+
+
